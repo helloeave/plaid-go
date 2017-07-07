@@ -7,6 +7,8 @@ import (
 	"io"
 	"io/ioutil"
 	"net/http"
+	
+	"github.com/helloeave/eave-go/config"
 )
 
 // NewClient instantiates a Client associated with a client id, secret and environment.
@@ -34,8 +36,16 @@ type Client struct {
 
 type environmentURL string
 
-var Tartan environmentURL = "https://tartan.plaid.com"
-var Production environmentURL = "https://api.plaid.com"
+var tartan environmentURL = "https://tartan.plaid.com"
+var production environmentURL = "https://api.plaid.com"
+
+func CurrentEnvironmentURL() environmentURL {
+	if config.IsStaging() {
+		return production
+	} else {
+		return tartan
+	}
+}
 
 type Account struct {
 	ID      string `json:"_id"`
